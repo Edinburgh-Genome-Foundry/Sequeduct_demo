@@ -1,0 +1,23 @@
+2023-08-24 10:43:29,354 NanoPlot 1.38.1 started with arguments Namespace(threads=4, verbose=False, store=False, raw=True, huge=False, outdir='barcode12_plots', prefix='', tsv_stats=False, info_in_report=False, maxlength=None, minlength=None, drop_outliers=False, downsample=None, loglength=False, percentqual=False, alength=False, minqual=None, runtime_until=None, readtype='1D', barcoded=False, no_supplementary=False, color='#4CB391', colormap='Greens', format='png', plots=['kde', 'dot'], legacy=None, listcolors=False, listcolormaps=False, no_N50=False, N50=False, title=None, font_scale=1, dpi=100, hide_stats=False, fastq=['/home/peter/data/lib/seq_unsynced/seq20230823_demo/fastq_pass/barcode12/AIB919_pass_barcode12_5117dbcf_0.fastq'], fasta=None, fastq_rich=None, fastq_minimal=None, summary=None, bam=None, ubam=None, cram=None, pickle=None, feather=None, path='barcode12_plots/')
+2023-08-24 10:43:29,354 Python version is: 3.9.17 (main, Aug 16 2023, 20:21:37)  [GCC 12.2.0]
+2023-08-24 10:43:29,389 Nanoget: Starting to collect statistics from plain fastq file.
+2023-08-24 10:43:30,173 Reduced DataFrame memory usage from 0.015380859375Mb to 0.015380859375Mb
+2023-08-24 10:43:30,182 Nanoget: Gathered all metrics of 1000 reads
+2023-08-24 10:43:30,197 Calculated statistics
+2023-08-24 10:43:30,198 Using sequenced read lengths for plotting.
+2023-08-24 10:43:30,199 NanoPlot:  Valid color #4CB391.
+2023-08-24 10:43:30,199 NanoPlot:  Valid colormap Greens.
+2023-08-24 10:43:30,200 NanoPlot:  Creating length plots for Read length.
+2023-08-24 10:43:30,200 NanoPlot:  Using 1000 reads maximum of 14858bp.
+2023-08-24 10:43:31,094 Saved barcode12_plots/WeightedHistogramReadlength  as png (or png for --legacy)
+2023-08-24 10:43:31,897 Saved barcode12_plots/WeightedLogTransformed_HistogramReadlength  as png (or png for --legacy)
+2023-08-24 10:43:32,571 Saved barcode12_plots/Non_weightedHistogramReadlength  as png (or png for --legacy)
+2023-08-24 10:43:33,399 Saved barcode12_plots/Non_weightedLogTransformed_HistogramReadlength  as png (or png for --legacy)
+2023-08-24 10:43:34,583 Saved barcode12_plots/Yield_By_Length  as png (or png for --legacy)
+2023-08-24 10:43:34,584 Created length plots
+2023-08-24 10:43:34,585 NanoPlot:  Creating Read lengths vs Average read quality plots using statistics from 1000 reads.
+2023-08-24 10:43:35,728 Saved barcode12_plots/LengthvsQualityScatterPlot_dot  as png (or png for --legacy)
+2023-08-24 10:43:36,865 Saved barcode12_plots/LengthvsQualityScatterPlot_kde  as png (or png for --legacy)
+2023-08-24 10:43:36,866 Created LengthvsQual plot
+2023-08-24 10:43:36,866 Writing html report.
+2023-08-24 10:43:36,876 Finished!

@@ -1,0 +1,7 @@
+EGF2_13	8939	0	8939	+	EGF2_13	8938	0	8938	8938	8939	60	NM:i:1	ms:i:8896	AS:i:8896	nn:i:0	tp:A:P	cm:i:904	s1:i:8897	s2:i:0	de:f:0.0001	rl:i:0	cg:Z:1837M1I7101M
+HC_Amp_ccdB	2721	949	2721	+	EGF2_13	8938	0	1772	1772	1772	60	NM:i:0	ms:i:1772	AS:i:1772	nn:i:0	tp:A:P	cm:i:178	s1:i:1756	s2:i:0	de:f:0	rl:i:0	cg:Z:1772M
+feature_10	2166	6	2159	+	EGF2_13	8938	1837	3990	2153	2153	60	NM:i:0	ms:i:2153	AS:i:2153	nn:i:0	tp:A:P	cm:i:211	s1:i:2139	s2:i:617	de:f:0	rl:i:0	cg:Z:2153M
+feature_12	390	7	383	+	EGF2_13	8938	3986	4362	376	376	60	NM:i:0	ms:i:376	AS:i:376	nn:i:0	tp:A:P	cm:i:34	s1:i:357	s2:i:0	de:f:0	rl:i:0	cg:Z:376M
+feature_16	1294	6	1287	+	EGF2_13	8938	6228	7509	1281	1281	60	NM:i:0	ms:i:1281	AS:i:1281	nn:i:0	tp:A:P	cm:i:132	s1:i:1258	s2:i:0	de:f:0	rl:i:0	cg:Z:1281M
+feature_18	1451	6	1440	+	EGF2_13	8938	7504	8938	1434	1434	60	NM:i:0	ms:i:1434	AS:i:1434	nn:i:0	tp:A:P	cm:i:140	s1:i:1408	s2:i:617	de:f:0	rl:i:0	cg:Z:1434M
+part_carrier	2329	235	852	-	EGF2_13	8938	114	730	615	617	60	NM:i:2	ms:i:554	AS:i:554	nn:i:0	tp:A:P	cm:i:51	s1:i:564	s2:i:0	de:f:0.0032	rl:i:0	cg:Z:120M1I496M
