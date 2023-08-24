@@ -99,6 +99,6 @@ A standalone Assembly pipeline creates *de novo* assembly sequences, without any
 
 ## Notes
 
-Please use the [Sequeduct](https://github.com/Edinburgh-Genome-Foundry/Sequeduct) project's page to file any issues or comments.
+Please use the [Sequeduct](https://github.com/Edinburgh-Genome-Foundry/Sequeduct) project's page to file any issues or comments. See the [main page](https://github.com/Edinburgh-Genome-Foundry) for other ways of contact.
 
 Copyright 2023 Edinburgh Genome Foundry, University of Edinburgh
