@@ -95,7 +95,7 @@ nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.0 -entry assembly \
     -profile docker
 ```
 
-A standalone Assembly pipeline creates *de novo* assembly sequences, without any reference files. The results are saved in the `results/dir4_assembly` directory.
+A standalone Assembly pipeline creates *de novo* assembly sequences, without any reference files. It requires the FASTQ files, and a sample sheet listing the barcodes and corresponding expected DNA (plasmid) length (in kbp). The results are saved in the `results/dir4_assembly` directory.
 
 ## Notes
 
