@@ -50,6 +50,8 @@ The output files are saved in the `results/dir2_analysis` directory. In this, `n
 
 Each reference DNA (plasmid) is analysed separately, with its corresponding reads. In this example of a DNA construct properly assembled from parts, we have ~500x coverage, with 1 point mutation at position 1836. Other variants at homopolymers are ignored as they're known systemic sequencing errors.
 
+---
+
 <p align="center">
 <img alt="Report" title="EGF" src="images/analysis_2.png" width="600">
 </p>
@@ -72,7 +74,17 @@ nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.0 -entry review \
 
 The Review pipeline aligns a user-defined list of sequences against the variant call consensus – or a *de novo* plasmid sequence assembled with Canu – and reports the alignments. This is useful for evaluating plasmids that are constructed from parts to clarify whether we have part or sample mix-ups, recombination events or overhang misannealing.
 
-This pipeline can only be run after running the Analysis pipeline as it uses the generated files. The results are saved in the `results/dir3_review` directory.
+This pipeline can only be run after running the Analysis pipeline, as it uses the generated files. It requires the reference Genbank files, the sequences in a single FASTA file, and a sheet specifying which samples we want to run for analysis of consensus sequences, and which for analysis of *de novo* assemblies. Optionally, an [assembly plan](/demo_assembly_plan.csv) can be specified, which lists which sequences we expect to be present for each reference sequence. This information is used in the report for an easier interpretation of results.
+
+The results are saved in the `results/dir3_review` directory. Please see the Appendix of the consensus review [PDF report](/results_example/dir3_review/n2_consensus_results/consensus_review.pdf), or the *de novo* review [PDF report](/results_example/dir3_review/n5_de_novo_results/de_novo_review.pdf) for a description.
+
+In this example, the feature_8 sequence is specified as HC_Amp_ccdB, which is a plasmid backbone.
+
+<p align="center">
+<img alt="Report" title="EGF" src="images/review_1.png" width="600">
+</p>
+
+DNA parts come in a carrier backbone plasmid, and this was also supplied with the name 'part_carrier'. We can see that in the failed cloning, this carrier was assembled instead of the intended insert. Upon inspection of the [*de novo* assembly FASTA](/results_example/dir3_review/n3_de_novo_assembly/trimmed/barcode12_denovo.fasta), we can see the presence of KanR, a resistance marker of the carrier plasmid, and a recognition site for the enzyme used for the assembly (BsmBI). We can also see that the part carrier plasmid sequence also aligns to HC_Amp_ccdB, as they have a near-identical *ori* region.
 
 ## Assembly
 
