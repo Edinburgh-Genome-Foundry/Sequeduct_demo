@@ -15,7 +15,7 @@ All results are output in a newly created `results` directory.
 ## Preview
 
 ```bash
-nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.0 -entry preview \
+nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.1 -entry preview \
     --fastq_dir='fastq_pass' \
     --sample_sheet='sample_sheet.csv' \
     -profile docker
@@ -30,7 +30,7 @@ Please see NanoPlot documentation for details.
 ## Analysis
 
 ```bash
-nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.0 -entry analysis \
+nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.1 -entry analysis \
     --fastq_dir='fastq_pass' \
     --reference_dir='genbank' \
     --sample_sheet='sample_sheet.csv' \
@@ -63,7 +63,7 @@ Please see the Appendix of the PDF report, the publication, and the nextflow pip
 ## Review
 
 ```bash
-nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.0 -entry review \
+nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.1 -entry review \
     --reference_dir='genbank' \
     --results_csv='results_reviewed.csv' \
     --projectname='EGF demo review' \
@@ -89,7 +89,7 @@ We can see that the annotations are coloured based on whether the supplied seque
 ## Assembly
 
 ```bash
-nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.0 -entry assembly \
+nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.1 -entry assembly \
     --fastq_dir='fastq_pass' \
     --assembly_sheet='de_novo_assembly_sheet.csv' \
     -profile docker
