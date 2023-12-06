@@ -1,10 +1,11 @@
 # Sequeduct demo
 
-Demonstration data for the [Sequeduct](https://github.com/Edinburgh-Genome-Foundry/Sequeduct) pipeline.
+This repository contains demonstration data and results for the [Sequeduct](https://github.com/Edinburgh-Genome-Foundry/Sequeduct) pipeline. Guidelines for interpreting the results are also provided here.
 
 #### View
 
 Example files and results (`results_example`) can be browsed here or after downloading (cloning) the repository.
+Certain intermediate analysis files in a few directories were not included (i.e. these directories are empty), due to the size of these generated files.
 
 #### Run
 
@@ -27,6 +28,8 @@ The pipeline requires a sample sheet that lists the selected barcodes (directori
 
 Please see NanoPlot documentation for details.
 
+It's recommended to examine the plots in order to check the overall quality of the run. The histograms provide information on the number of reads obtained, the quality distribution and the potential presence of plasmid dimers. With this information, we can proceed with selected samples in the Analysis pipeline.
+
 ## Analysis
 
 ```bash
@@ -40,25 +43,86 @@ nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.1 -entry analysis \
 
 The Analysis pipeline compares the Nanopore reads against the expected (designed) sequence.
 
-The pipeline requires the input data: reference Genbank files (in standard format, and with extension ".gb"), the FASTQ file folder, and a sample sheet that maps reference filenames (without extension) with the subdirectories in the FASTQ folder. (EGF's [Convert Sequence Files](https://cuba.genomefoundry.org/convert_sequence_files) can convert FASTA, Genbank or other formats into the required standard format.) As the pipeline was designed to work with multiple barcodes, the FASTQ folder must be structured with subdirectories for each barcode.
+The pipeline requires the following input data: reference Genbank files (in standard format, and with extension ".gb"), the FASTQ file folder, and a sample sheet that maps reference filenames (without extension) with the subdirectories in the FASTQ folder. (EGF's [Convert Sequence Files](https://cuba.genomefoundry.org/convert_sequence_files) can convert FASTA, Genbank or other formats into the required standard format.) As the pipeline was designed to work with multiple barcodes, the FASTQ folder must be structured with subdirectories for each barcode.
 
-The output files are saved in the `results/dir2_analysis` directory. In this, `n7_results` contain the final results: a [PDF report](/results_example/dir2_analysis/n7_results/Ediacara_report.pdf) (see its Appendix for a detailed description), a list of the entries, and a summary of the results in the [CSV file format](https://en.wikipedia.org/wiki/Comma-separated_values), which can be opened in a spreadsheet software.
+The output files are saved in the `results/dir2_analysis` directory. In this, `n7_results` contain the final results: a [PDF report](/results_example/dir2_analysis/n7_results/Ediacara_report.pdf), a list of the sample analysed, and a summary of the results in the [CSV file format](https://en.wikipedia.org/wiki/Comma-separated_values). The PDF report describes the results in detail, as shown below (see its Appendix for a detailed description). The sample list details the relevant result files for for each analysed sample entry ([entries.csv](/results_example/dir2_analysis/n7_results/entries.csv)). The [results summary file](/results_example/dir2_analysis/n7_results/results.csv) can be opened in a spreadsheet software and revised based on the report, following the procedure described below.
+
+The report is structured into chapters, one for each FASTQ subdirectory (i.e. barcode). Note that the reads are not required to be derived from barcoded samples, as the pipeline does not utilise any barcoding information. Therefore any set of FASTQ files can be used, whether they originated from non-barcoded sequencing, or from demultiplexed data from a custom barcoding protocol. Each chapter consists of one or more sections that each describe the results for a given reference (plasmid). This structure allows future expansion of the pipeline to multiplexed samples, but currently this is not implemented.
+
+Report cover page:
+
+<p align="center">
+<img alt="Report" title="EGF" src="images/analysis_cover_page.png" width="600">
+</p>
+
+The cover page contains basic information about the run, such as the number of reads analysed.
+
+#### First chapter or FASTQ directory (barcode)
+
+Chapter cover page:
+
+<p align="center">
+<img alt="Report" title="EGF" src="images/analysis_1_chapter.png" width="600">
+</p>
+
+The first line summarises the results for the FASTQ directory, followed by a table of key statistics. A histogram of filtered read lengths is displayed. If we have mostly full length reads (e.g. linearised plasmids or plasmids from rapid barcoding kit), then the peak can be used for estimating the size of the plasmid. Wrong size indicate large structural variation (insertion / deletion), sample mixup or errors in the sample spreadsheet.
+
+Section first page:
 
 <p align="center">
 <img alt="Report" title="EGF" src="images/analysis_1.png" width="600">
 </p>
 
-Each reference DNA (plasmid) is analysed separately, with its corresponding reads. In this example of a DNA construct properly assembled from parts, we have ~500x coverage, with 1 point mutation at position 1836. Other variants at homopolymers are ignored as they're known systemic sequencing errors.
+Each reference DNA (plasmid) is analysed separately, with its corresponding reads. A result call (fail / pass / low coverage / warning) is assigned to each section. It's recommended to revise this, based on the contents of the section. A coverage plot is displayed under the reference sequence (plasmid) map. In this example of a DNA construct properly assembled from parts, we have ~500x coverage, evenly covering the full length of the sequence, therefore we can exclude large deletions.
+Note that to include tolerance and due to potential adapter sequences, unaligned read cutoff is set to 100 bp and shown with a grey vertical line
+
+ The cumulative plot of longest unaligned intervals also suggests that there are no regions in the reads that don't align to the reference, suggesting that there are no large insertions either.
+
+Finally, a simplified variant call format (VCF) table lists all detected small mutations (SNPs and indels). Homopolymer stretches are known to produce systemic sequencing errors, therefore these are not considered true variants. This is confirmed by the disagreement between the reads, cf. reference / alternate allele observation counts (RO / AO columns).
+
+We find one point mutation at position 1836.
+
+Section second page:
+
+<p align="center">
+<img alt="Report" title="EGF" src="images/analysis_1b.png" width="600">
+</p>
+
+The second page shows the plasmid map with variant annotations, for an easy overview. (Variants at homopolymers are ignored as explained above.) A [consensus file](/results_example/dir2_analysis/n6_consensus/barcode01_EGF2_2_consensus.fa) of true variants is also provided for each barcode.
 
 ---
+
+#### Second chapter
+
+<p align="center">
+<img alt="Report" title="EGF" src="images/analysis_2a.png" width="600">
+</p>
+
+The second example plasmid was flagged as a failed sample. The histogram of reads suggests that the plasmid is shorter than what we expect.
 
 <p align="center">
 <img alt="Report" title="EGF" src="images/analysis_2.png" width="600">
 </p>
 
-In this failed example, there is no coverage for feature_20, suggesting that there is an assembly error. The length of the reads (see report) and the insert plot suggest that some other DNA part got assembled in the place of feature_20. We also have the same point mutation present as the previous example. This construct used the same DNA part (feature_8), which suggests that the point mutation was present in the part originally and is not new.
+This was a failed plasmid assembly. We see that there is no coverage for feature_20, suggesting that there is an assembly error. The insert plot suggests that the majority of reads have a non-aligning segment of ~1700 bp. This suggests that some other DNA part got assembled into the plasmid, instead of feature_20. Further analysis and explanation is provided in the Review section below.
 
-Please see the Appendix of the PDF report, the publication, and the nextflow pipeline code and documentation for more details.
+We also have the same point mutation present as in the previous example, however, note that variant call does not detect large (structural) variants such as large deletions or insertions. In this case, the consensus FASTA sequence should not be used.
+
+This construct used the same DNA part (feature_8) as the previous example, which suggests that the point mutation was present in the DNA part originally and is not created during the cloning and amplification work.
+
+Please see the Appendix of the PDF report, the publication, and the Nextflow pipeline code and documentation for more details such as setting parameters.
+
+#### Summary of revising steps
+
+* Open a copy of `results.csv` in a spreadsheet software.
+* Create a new column and review the results for each sample in the PDF report.
+* Check number of reads and coverage. Insufficient coverage is usually marked with 'low coverage'.
+* On the histogram, check read length distribution (fragmentation). If we have sufficient number of full-length reads, then compare the peak against the expected length (vertical red line). Differences can indicate large indels.
+* Inspect the coverage plot for uncovered regions, which indicate deletions.
+* Interpret the cumulative plot of longest unaligned intervals to find large inserts.
+* Review the variant call format table and note variants. Note that large indels are not displayed in the table.
+* Reject or accept samples, depending on the requirements of the project.
+* If a large insertion or deletion is found, perform a _de novo_ assembly on the sample. For large insertions, the Review pipeline can help in clarifying the nature of the error.
 
 ## Review
 
@@ -72,19 +136,19 @@ nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.1 -entry review \
     -profile docker
 ```
 
-The Review pipeline aligns a user-defined list of sequences against the variant call consensus – or a *de novo* plasmid sequence assembled with Canu – and reports the alignments. This is useful for evaluating plasmids that are constructed from parts to clarify whether we have part or sample mix-ups, recombination events or overhang misannealing.
+The Review pipeline aligns a user-defined list of sequences against the variant call consensus – or a _de novo_ plasmid sequence assembled with Canu – and reports the alignments. This is useful for evaluating plasmids that are constructed from parts to clarify whether we have part or sample mix-ups, recombination events or overhang misannealing.
 
-This pipeline can only be run after running the Analysis pipeline, as it uses the generated files. It requires the reference Genbank files, the sequences in a single FASTA file, and a sheet specifying which samples we want to run for analysis of consensus sequences, and which for analysis of *de novo* assemblies. Optionally, an [assembly plan](/demo_assembly_plan.csv) can be specified, which lists which sequences we expect to be present for each reference sequence. This information is used in the report for an easier interpretation of results.
+This pipeline can only be run after running the Analysis pipeline, as it uses the generated files. It requires the reference Genbank files, the sequences in a single FASTA file, and a sheet specifying which samples we want to run for analysis of consensus sequences, and which for analysis of _de novo_ assemblies. Optionally, an [assembly plan](/demo_assembly_plan.csv) can be specified, which lists which sequences we expect to be present for each reference sequence. This information is used in the report for an easier interpretation of results.
 
-The results are saved in the `results/dir3_review` directory. Please see the Appendix of the consensus review [PDF report](/results_example/dir3_review/n2_consensus_results/consensus_review.pdf), or the *de novo* review [PDF report](/results_example/dir3_review/n5_de_novo_results/de_novo_review.pdf) for a description.
+The results are saved in the `results/dir3_review` directory. Please see the Appendix of the consensus review [PDF report](/results_example/dir3_review/n2_consensus_results/consensus_review.pdf), or the _de novo_ review [PDF report](/results_example/dir3_review/n5_de_novo_results/de_novo_review.pdf) for a description.
 
-In this example, the feature_8 sequence is specified as HC_Amp_ccdB, which is a plasmid backbone. The software automatically recognises if the *de novo* assembly is in reverse complement to the reference, as noted on the top of the page. Moreover, the sequence assembled from reads do not (necessarily) have the same origin as our reference.
+In this example, the feature_8 sequence is specified as HC_Amp_ccdB, which is a plasmid backbone. The software automatically recognises if the _de novo_ assembly is in reverse complement to the reference, as noted on the top of the page. Moreover, the sequence assembled from reads do not (necessarily) have the same origin as our reference.
 
 <p align="center">
 <img alt="Report" title="EGF" src="images/review_1.png" width="600">
 </p>
 
-We can see that the annotations are coloured based on whether the supplied sequence is expected in the plasmid (green shows expected parts). DNA parts come in a carrier backbone plasmid, and this was also supplied with the name 'part_carrier'. We can see that in the failed cloning, this carrier, which shows as unexpected (in red), was assembled instead of the intended insert. Upon inspection of the [*de novo* assembly FASTA](/results_example/dir3_review/n3_de_novo_assembly/trimmed/barcode12_denovo.fasta), we can see the presence of KanR, a resistance marker of the carrier plasmid, and a recognition site for the restriction enzyme used for the assembly (BsmBI). We can also see that the part carrier plasmid sequence also aligns to HC_Amp_ccdB, as they have a near-identical *ori* region.
+We can see that the annotations are coloured based on whether the supplied sequence is expected in the plasmid (green shows expected parts). DNA parts come in a carrier backbone plasmid, and this was also supplied with the name 'part_carrier'. We can see that in the failed cloning, this carrier, which shows as unexpected (in red), was assembled instead of the intended insert. Upon inspection of the [_de novo_ assembly FASTA](/results_example/dir3_review/n3_de_novo_assembly/trimmed/barcode12_denovo.fasta), we can see the presence of KanR, a resistance marker of the carrier plasmid, and a recognition site for the restriction enzyme used for the assembly (BsmBI). We can also see that the part carrier plasmid sequence also aligns to HC_Amp_ccdB, as they have a near-identical _ori_ region.
 
 ## Assembly
 
@@ -95,7 +159,9 @@ nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.1 -entry assembly \
     -profile docker
 ```
 
-A standalone Assembly pipeline creates *de novo* assembly sequences, without any reference files. It requires the FASTQ files, and a sample sheet listing the barcodes and corresponding expected DNA (plasmid) length (in kbp). The results are saved in the `results/dir4_assembly` directory.
+A standalone Assembly pipeline creates _de novo_ assembly sequences, without any reference files. It requires the FASTQ files, and a sample sheet listing the barcodes and corresponding expected DNA (plasmid) length (in kbp). The results are saved in the `results/dir4_assembly` directory.
+
+Note that sometimes the assembled sequence is made up of two consecutive sequences of the reference (with double length). This "duplication" happens when reads are derived from random segments of a circular sequence, such as a plasmid, and joined by an assembler. Canu, the assembler, tries to identify whether the sequence is duplicated, but this automatic identification is not always successful.
 
 ## Notes
 
