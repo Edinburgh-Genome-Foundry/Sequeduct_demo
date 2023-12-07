@@ -74,11 +74,11 @@ Section (first page): coverage plot
 </p>
 
 Each reference DNA (plasmid) is analysed separately, with its corresponding reads. A result call (fail / pass / low coverage / warning) is assigned to each section. It's recommended to revise this, based on the contents of the section. A coverage plot is displayed under the reference sequence (plasmid) map. In this example of a DNA construct properly assembled from parts, we have ~500x coverage, evenly covering the full length of the sequence, therefore we can exclude large deletions.
-Note that to include tolerance and due to potential adapter sequences, unaligned read cutoff is set to 100 bp and shown with a grey vertical line
+Note that to include tolerance and due to potential adapter sequences, unaligned read cutoff is set to 100 bp and shown with a grey vertical line.
 
- The cumulative plot of longest unaligned intervals also suggests that there are no regions in the reads that don't align to the reference, suggesting that there are no large insertions either.
+The cumulative plot of longest unaligned intervals also suggests that there are no regions in the reads that don't align to the reference, suggesting that there are no large insertions either.
 
-Finally, a simplified variant call format (VCF) table lists all detected small variants (SNPs and indels). Homopolymer stretches are known to produce systemic sequencing errors, therefore these are not considered true variants. This is confirmed by the disagreement between the reads, cf. reference / alternate allele observation counts (RO / AO columns).
+Finally, a simplified variant call format (VCF) table lists all detected small variants (SNPs and indels). Homopolymer stretches are known to produce systemic sequencing errors, therefore these are not considered true variants. This is confirmed by the disagreement between the reads: as seen in the reference / alternate allele observation counts (RO / AO columns).
 
 We find one point mutation at position 1836.
 
@@ -98,13 +98,13 @@ The second page shows the plasmid map with variant annotations, for an easy over
 <img alt="Report" title="EGF" src="images/analysis_2a.png" width="600">
 </p>
 
-The second example plasmid was flagged as a failed sample. The histogram of reads suggests that the plasmid is shorter than what we expect.
+The second example plasmid was flagged as a failed sample. The histogram of reads suggests that the plasmid is smaller than what we expect.
 
 <p align="center">
 <img alt="Report" title="EGF" src="images/analysis_2.png" width="600">
 </p>
 
-This was a failed plasmid assembly. We see that there is no coverage for feature_20, indicating that there is an assembly error. The insert plot suggests that the majority of reads have a non-aligning segment of ~1700 bp. This suggests that some other DNA part got assembled into the plasmid, instead of feature_20. Further analysis and explanation is provided in the Review section below.
+This was a failed plasmid assembly. We see that there is no coverage for feature_20, indicating that there is an assembly error. The insert plot shows that the majority of reads have a non-aligning segment of ~1700 bp. This suggests that some other DNA part got assembled into the plasmid, instead of feature_20. Further analysis and explanation is provided in the Review section below.
 
 We also have the same point mutation present as in the previous example, however, note that variant call does not detect structural variants such as large deletions or insertions. In this case, the consensus FASTA sequence should not be used.
 
@@ -152,7 +152,7 @@ The Review pipeline aligns a user-defined list of sequences against a _de novo_ 
 
 The _de novo_ consensus sequence is provided in the FASTA format and is assembled entirely from the reads, using [Canu](https://github.com/marbl/canu), without utilising the reference file.
 
-This pipeline can only be run after running the Analysis pipeline, as it uses the generated files. It requires the reference Genbank files, the sequences in a single FASTA file, and a sheet specifying which samples we want to review. This sample sheet is the `results.csv` file from the Analysis run, with requested samples marked with `1` in the `Review_de_novo` column. (Other marker value can be set with the `--denovo_true` parameter.) There is also a `Review_consensus` column for specifying samples to be analysed using the _variant call consensus_ sequences, but as this is not recommended due to issues mentioned above. Optionally, an [assembly plan](/demo_assembly_plan.csv) can be specified, which lists which sequences we expect to be present for each reference sequence. This information is used in the report for an easier interpretation of results.
+This pipeline can only be run after running the Analysis pipeline, as it uses the generated files. It requires the reference Genbank files, the sequences in a single FASTA file, and a sheet specifying which samples we want to review. This sample sheet is the `results.csv` file from the Analysis run, with requested samples marked with `1` in the `Review_de_novo` column. (Other marker value can be set with the `--denovo_true` parameter.) There is also a `Review_consensus` column for specifying samples to be analysed using the _variant call consensus_ sequences, but this is not recommended due to issues mentioned above. Optionally, an [assembly plan](/demo_assembly_plan.csv) can be specified, which lists which sequences we expect to be present for each reference sequence. This information is used in the report for an easier interpretation of results.
 
 The results are saved in the `results/dir3_review` directory. Please see the Appendix of the consensus review [PDF report](/results_example/dir3_review/n2_consensus_results/consensus_review.pdf), or the _de novo_ review [PDF report](/results_example/dir3_review/n5_de_novo_results/de_novo_review.pdf) for a description.
 
@@ -189,7 +189,7 @@ nextflow run edinburgh-genome-foundry/Sequeduct -r v0.3.1 -entry assembly \
     -profile docker
 ```
 
-A standalone Assembly pipeline creates _de novo_ assembly sequences, without any reference files. It requires the FASTQ files, and a sample sheet listing the barcodes and corresponding expected DNA (plasmid) length (in kbp). The results are saved in the `results/dir4_assembly` directory.
+The standalone Assembly pipeline creates _de novo_ assembly sequences, without any reference files. It requires the FASTQ files, and a sample sheet listing the barcodes and corresponding expected DNA (plasmid) length (in kbp). The results are saved in the `results/dir4_assembly` directory.
 
 Note that sometimes the assembled sequence is made up of two consecutive sequences of the reference (with double length). This "duplication" happens when reads are derived from random segments of a circular sequence, such as a plasmid, and joined by an assembler. Canu, the assembler, tries to identify whether the sequence is duplicated, but this automatic identification is not always successful. The result of the identification is shown in the `suggestCircular` parameter of the consensus FASTA header (sequence name).
 
