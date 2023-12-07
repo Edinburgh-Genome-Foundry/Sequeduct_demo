@@ -65,9 +65,9 @@ Chapter cover page:
 <img alt="Report" title="EGF" src="images/analysis_1_chapter.png" width="600">
 </p>
 
-The first line summarises the results for the FASTQ directory, followed by a table of key statistics. A histogram of filtered read lengths is displayed. If we have mostly full length reads (e.g. linearised plasmids or plasmids from rapid barcoding kit), then the peak can be used for estimating the size of the plasmid. Wrong size indicate large structural variation (insertion / deletion), sample mixup or errors in the sample spreadsheet.
+The first line summarises the results for the FASTQ directory, followed by a table of key statistics. A histogram of filtered read lengths is displayed. If we have mostly full length reads (e.g. linearised plasmids or plasmids from rapid barcoding kit), then the peak can be used for estimating the size of the plasmid. Wrong size indicates large structural variation (insertion / deletion), sample mixup or errors in the sample spreadsheet.
 
-Section first page:
+Section (first page): coverage plot
 
 <p align="center">
 <img alt="Report" title="EGF" src="images/analysis_1.png" width="600">
@@ -82,7 +82,7 @@ Finally, a simplified variant call format (VCF) table lists all detected small m
 
 We find one point mutation at position 1836.
 
-Section second page:
+Section (second page): variant plot
 
 <p align="center">
 <img alt="Report" title="EGF" src="images/analysis_1b.png" width="600">
@@ -104,13 +104,25 @@ The second example plasmid was flagged as a failed sample. The histogram of read
 <img alt="Report" title="EGF" src="images/analysis_2.png" width="600">
 </p>
 
-This was a failed plasmid assembly. We see that there is no coverage for feature_20, suggesting that there is an assembly error. The insert plot suggests that the majority of reads have a non-aligning segment of ~1700 bp. This suggests that some other DNA part got assembled into the plasmid, instead of feature_20. Further analysis and explanation is provided in the Review section below.
+This was a failed plasmid assembly. We see that there is no coverage for feature_20, indicating that there is an assembly error. The insert plot suggests that the majority of reads have a non-aligning segment of ~1700 bp. This suggests that some other DNA part got assembled into the plasmid, instead of feature_20. Further analysis and explanation is provided in the Review section below.
 
 We also have the same point mutation present as in the previous example, however, note that variant call does not detect large (structural) variants such as large deletions or insertions. In this case, the consensus FASTA sequence should not be used.
 
 This construct used the same DNA part (feature_8) as the previous example, which suggests that the point mutation was present in the DNA part originally and is not created during the cloning and amplification work.
 
 Please see the Appendix of the PDF report, the publication, and the Nextflow pipeline code and documentation for more details such as setting parameters.
+
+#### Setting parameters
+
+Key pipeline parameters can be set by the user. The list of parameters and their default settings can be found in the [nextflow.config](https://github.com/Edinburgh-Genome-Foundry/Sequeduct/blob/main/nextflow.config) file. The default parameters work very well for most sequencing runs, but we provide a few pointers below for setting different values, depending on use-case.
+
+`--max_len_fraction=1.5` : the maximum read length cutoff is used to filter reads by NanoFilt. The default is 1.5x of the reference sequence length. Set this to a higher value to include plasmid dimers, or if the reference sequence is a short subsegment of the sequenced DNA.
+
+`--min_length=500` : the value is in number of nucleotides (bp). Most plasmids are longer than 1 kbp and linearisation or fragmentation results in mostly full length reads. Set the value lower if the DNA is shorter or the reads are more fragmented.
+
+`--quality_cutoff=10` : this PHRED quality score cutoff parameter is used by NanoFilt. Set to a higher value to work with better reads or if there is an overabundance of reads. Set to a lower value to use more reads if the reads are lower quality than usual, e.g. due to an issue with a sequencing run or sequencer software. Results of the Preview pipeline can be used for determining an appropriate cutoff.
+
+`--freebayes.args` : these are used by the [freebayes](https://github.com/freebayes/freebayes) variant detector. Set `--min-base-quality` PHRED score cutoff higher/lower to use fewer/more bases during variant call. The variant call table (DP column) in the report can help in determining a different cutoff. If the values in the DP column are very low in contrast to high sequencing depth or coverage, then try a lower value such as 15. In most cases the default will be the most suitable.
 
 #### Summary of revising steps
 
